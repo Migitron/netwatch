@@ -1,0 +1,40 @@
+# netwatch.yaml — NetWatch configuration
+# Copy this to your project root and edit it for your home lab
+
+# How often to poll devices (in seconds)
+poll_interval_seconds: 30
+
+# Where to store the SQLite database
+db_path: "netwatch.db"
+
+# Devices to monitor
+# Start with one device — your home router is a great first target
+# Most home routers have SNMP disabled by default; check your router's admin panel
+devices:
+  - name: "Home Router"
+    host: "192.168.1.1"        # Change to your router's IP
+    community: "public"         # SNMP community string (check your router settings)
+    snmp_port: 161
+    enable_ping: true
+
+  # Example second device — uncomment and edit when ready
+  # - name: "Lab Switch"
+  #   host: "192.168.1.10"
+  #   community: "public"
+  #   snmp_port: 161
+  #   enable_ping: true
+
+  # You can also monitor any Linux machine running the SNMP daemon (snmpd)
+  # - name: "Raspberry Pi"
+  #   host: "192.168.1.50"
+  #   community: "public"
+  #   snmp_port: 161
+  #   enable_ping: true
+
+alerts:
+  # Optional: paste a Slack incoming webhook URL here to get notifications
+  # Leave empty to disable Slack alerts (logs will still show alert events)
+  slack_webhook_url: ""
+
+  # How many seconds a device must be unreachable before firing an alert
+  offline_after_seconds: 120
