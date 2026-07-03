@@ -4,6 +4,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"gopkg.in/yaml.v3"
 )
@@ -22,6 +23,14 @@ type Config struct {
 }
 
 func Load(path string) (*Config, error) {
+	if !filepath.IsAbs(path) {
+		var err error
+		path, err = filepath.Abs(path)
+		if err != nil {
+			return nil, fmt.Errorf("error resolving config path %q: %w", path, err)
+		}
+	}
+
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("error reading config file: %w", err)
@@ -34,5 +43,4 @@ func Load(path string) (*Config, error) {
 	}
 
 	return &cfg, nil
-
 }
