@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/migiton/netwatch/internal/collector"
 	"github.com/migiton/netwatch/internal/config"
 )
 
@@ -21,4 +22,11 @@ func main() {
 	for _, dev := range cfg.Devices {
 		fmt.Printf("Name: %s | IP: %s \n", dev.Name, dev.Host)
 	}
+
+	_, reachable := collector.Ping("192.168.0.125")
+
+	if reachable {
+		fmt.Println("ping succesfull")
+	}
+
 }
