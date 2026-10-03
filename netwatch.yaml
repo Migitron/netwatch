@@ -5,8 +5,4 @@ devices:
     community: "public"
     snmp_port: 161
     enable_ping: true   
-  - name: "newdevice"
-    host: "192.168.1.51"
-    community: "public"
-    snmp_port: 161
-    enable_ping: true   
+
