@@ -4,5 +4,15 @@ devices:
     host: "192.168.0.125"
     community: "public"
     snmp_port: 161
-    enable_ping: true   
+    enable_ping: true
+  - name: "MotherVault"
+    host: "192.168.0.110"
+    community: "public"
+    snmp_port: 161
+    enable_ping: true
+  - name: "Non-Exist"
+    host: "198.168.0.125"
+    community: "public"
+    snmp_port: 161
+    enable_ping: true
 
