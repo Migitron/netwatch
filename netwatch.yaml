@@ -10,8 +10,13 @@ devices:
     community: "public"
     snmp_port: 161
     enable_ping: true
-  - name: "Non-Exist"
+  - name: "TEST"
     host: "198.168.0.125"
+    community: "public"
+    snmp_port: 161
+    enable_ping: true
+  - name: "McBook"
+    host: "192.168.0.62"
     community: "public"
     snmp_port: 161
     enable_ping: true
