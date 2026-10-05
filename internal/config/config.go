@@ -42,5 +42,14 @@ func Load(path string) (*Config, error) {
 		return nil, fmt.Errorf("error parsing config YAML: %w", err)
 	}
 
+	for i := range cfg.Devices {
+		if cfg.Devices[i].SNMPPort == 0 {
+			cfg.Devices[i].SNMPPort = 161
+		}
+		if cfg.Devices[i].Community == "" {
+			cfg.Devices[i].Community = "public"
+		}
+	}
+
 	return &cfg, nil
 }

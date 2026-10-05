@@ -21,5 +21,5 @@ func main() {
 	fmt.Println("Netwatching port: ", cfg.Port)
 
 	collector.Ping(cfg)
-	collector.PollSystem(cfg)
+	collector.Poll(cfg)
 }
