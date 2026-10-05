@@ -46,10 +46,13 @@ func printPingResults(results []collector.PingResult) {
 func printPollResults(results []collector.SystemInfo) {
 	fmt.Println("Polling all devices:")
 	for _, r := range results {
-		if r.Err != nil {
+		switch {
+		case r.Skipped:
+			fmt.Printf("%s | IP = %s: SKIPPED (SNMP disabled)\n", r.Device, r.IP)
+		case r.Err != nil:
 			fmt.Printf("%s | IP = %s: SNMP ERROR: %v\n", r.Device, r.IP, r.Err)
-			continue
+		default:
+			fmt.Printf("%s | IP = %s: sysName = %q up %v\n", r.Device, r.IP, r.SysName, r.Uptime.Round(time.Second))
 		}
-		fmt.Printf("%s | IP = %s: sysName = %q up %v\n", r.Device, r.IP, r.SysName, r.Uptime.Round(time.Second))
 	}
 }

@@ -24,6 +24,7 @@ const (
 type SystemInfo struct {
 	Device    string // name from the config file
 	IP        string
+	Skipped   bool   // SNMP is disabled for this device in the config
 	SysName   string // name the device reports about itself
 	Descr     string
 	Uptime    time.Duration

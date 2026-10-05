@@ -26,6 +26,7 @@ type Device struct {
 	Community  string `yaml:"community"` // SNMP v2c community string
 	SNMPPort   uint16 `yaml:"snmp_port"`
 	EnablePing bool   `yaml:"enable_ping"`
+	EnableSNMP bool   `yaml:"enable_snmp"`
 }
 
 // Load reads the config file at path and fills in defaults for any

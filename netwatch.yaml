@@ -5,19 +5,18 @@ devices:
     community: "public"
     snmp_port: 161
     enable_ping: true
-  - name: "TEST"
+    enable_snmp: true
+  - name: "TEST-Dissabled"
     host: "198.168.0.125"
     community: "public"
     snmp_port: 161
     enable_ping: false
-  - name: "McBook"
-    host: "192.168.0.62"
+    enable_snmp: false
+  - name: "TEST-ERROR"
+    host: "198.168.0.125"
     community: "public"
     snmp_port: 161
     enable_ping: true
-  - name: "MotherVault"
-    host: "192.168.0.110"
-    community: "public"
-    snmp_port: 161
-    enable_ping: true
+    enable_snmp: true
+
 

@@ -32,6 +32,10 @@ func PollAll(cfg *config.Config) []SystemInfo {
 	results := make([]SystemInfo, len(cfg.Devices))
 	var wg sync.WaitGroup
 	for i, dev := range cfg.Devices {
+		if !dev.EnableSNMP {
+			results[i] = SystemInfo{Device: dev.Name, IP: dev.Host, Skipped: true}
+			continue
+		}
 		wg.Go(func() {
 			results[i] = pollSystem(dev)
 		})
