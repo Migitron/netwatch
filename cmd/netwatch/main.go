@@ -52,7 +52,7 @@ func printPollResults(results []collector.SystemInfo) {
 		case r.Err != nil:
 			fmt.Printf("%s | IP = %s: SNMP ERROR: %v\n", r.Device, r.IP, r.Err)
 		default:
-			fmt.Printf("%s | IP = %s: sysName = %q up %v\n", r.Device, r.IP, r.SysName, r.Uptime.Round(time.Second))
+			fmt.Printf("%s | IP = %s: sysName = %q UP:%v IN:%v OUT:%v\n", r.Device, r.IP, r.SysName, r.Uptime.Round(time.Second), r.IfInOctets, r.IfOutOctets)
 		}
 	}
 }

@@ -7,7 +7,7 @@ devices:
     enable_ping: true
     enable_snmp: true
   - name: "TEST-Dissabled"
-    host: "198.168.0.125"
+    host: "192.168.0.125"
     community: "public"
     snmp_port: 161
     enable_ping: false

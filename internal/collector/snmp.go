@@ -10,9 +10,11 @@ import (
 // OIDs from the SNMP system group (RFC 1213). The leading dot matches the
 // form gosnmp uses in responses, so the same constants work for both.
 const (
-	oidSysDescr  = ".1.3.6.1.2.1.1.1.0"
-	oidSysUpTime = ".1.3.6.1.2.1.1.3.0"
-	oidSysName   = ".1.3.6.1.2.1.1.5.0"
+	oidSysDescr     = ".1.3.6.1.2.1.1.1.0"
+	oidSysUpTime    = ".1.3.6.1.2.1.1.3.0"     // how long the device has been running
+	oidSysName      = ".1.3.6.1.2.1.1.5.0"     //device host name
+	oidIfInOctets1  = "1.3.6.1.2.1.2.2.1.10.1" // bytes received on interface 1
+	oidIfOutOctets1 = "1.3.6.1.2.1.2.2.1.16.1" // bytes sent on interface 1
 )
 
 const (
@@ -22,14 +24,16 @@ const (
 
 // SystemInfo holds the SNMP system values read from a single device.
 type SystemInfo struct {
-	Device    string // name from the config file
-	IP        string
-	Skipped   bool   // SNMP is disabled for this device in the config
-	SysName   string // name the device reports about itself
-	Descr     string
-	Uptime    time.Duration
-	Err       error
-	CheckedAt time.Time
+	Device      string // name from the config file
+	IP          string
+	Skipped     bool   // SNMP is disabled for this device in the config
+	SysName     string // name the device reports about itself
+	Descr       string
+	Uptime      time.Duration
+	IfInOctets  int64
+	IfOutOctets int64
+	Err         error
+	CheckedAt   time.Time
 }
 
 func pollSystem(dev config.Device) SystemInfo {
@@ -49,7 +53,8 @@ func pollSystem(dev config.Device) SystemInfo {
 	}
 	defer g.Conn.Close()
 
-	res, err := g.Get([]string{oidSysDescr, oidSysUpTime, oidSysName})
+	oids := []string{oidSysDescr, oidSysUpTime, oidSysName, oidIfInOctets1, oidIfOutOctets1}
+	res, err := g.Get(oids)
 	if err != nil {
 		info.Err = err
 		return info
@@ -70,7 +75,25 @@ func pollSystem(dev config.Device) SystemInfo {
 			if b, ok := v.Value.([]byte); ok {
 				info.SysName = string(b)
 			}
+		case "." + oidIfInOctets1:
+			info.IfInOctets = toInt64(v.Value)
+		case "." + oidIfOutOctets1:
+			info.IfOutOctets = toInt64(v.Value)
 		}
 	}
 	return info
+}
+
+func toInt64(v interface{}) int64 {
+	switch val := v.(type) {
+	case uint:
+		return int64(val)
+	case uint32:
+		return int64(val)
+	case uint64:
+		return int64(val)
+	case int:
+		return int64(val)
+	}
+	return 0
 }
