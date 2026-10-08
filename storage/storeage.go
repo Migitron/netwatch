@@ -25,12 +25,12 @@ type DB struct {
 	conn *sql.DB
 }
 
-// TODO add function to OPEN DB that calls migrate
 func Open(path string) (*DB, error) {
 	conn, err := sql.Open("sqlite3", path)
 	if err != nil {
 		return nil, err
 	}
+
 	err = conn.Ping()
 	if err != nil {
 		conn.Close()
@@ -70,7 +70,12 @@ func (db *DB) migrate() error {
 	indexTable := `CREATE INDEX IF NOT EXISTS idx_metrics_device_time
     ON metrics (device_id, timestamp);`
 
-	_, err := db.conn.Exec(devicesTable)
+	_, err := db.conn.Exec("PRAGMA foreign_keys = ON;")
+	if err != nil {
+		return err
+	}
+
+	_, err = db.conn.Exec(devicesTable)
 	if err != nil {
 		return err
 	}
