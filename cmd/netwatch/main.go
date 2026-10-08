@@ -10,6 +10,7 @@ import (
 
 	"github.com/migiton/netwatch/internal/collector"
 	"github.com/migiton/netwatch/internal/config"
+	"github.com/migiton/netwatch/storage"
 )
 
 func main() {
@@ -20,6 +21,12 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to load config: %v", err)
 	}
+
+	db, err := storage.Open("netwatch.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
 
 	fmt.Println("Netwatching port:", cfg.Port)
 

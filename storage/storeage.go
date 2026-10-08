@@ -2,6 +2,7 @@ package storage
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -24,8 +25,30 @@ type DB struct {
 	conn *sql.DB
 }
 
-//TODO add function to OPEN DB that calls migrate
+// TODO add function to OPEN DB that calls migrate
+func Open(path string) (*DB, error) {
+	conn, err := sql.Open("sqlite3", path)
+	if err != nil {
+		return nil, err
+	}
+	err = conn.Ping()
+	if err != nil {
+		conn.Close()
+		return nil, fmt.Errorf("connection to %s: %w", path, err)
+	}
 
+	db := &DB{conn: conn}
+
+	err = db.migrate()
+	if err != nil {
+		conn.Close()
+		return nil, err
+	}
+	return db, nil
+
+}
+
+// Migrate creates the tabels if they do not exist
 func (db *DB) migrate() error {
 	devicesTable := `CREATE TABLE IF NOT EXISTS devices (
 	id           INTEGER PRIMARY KEY,
