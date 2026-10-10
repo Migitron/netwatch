@@ -92,6 +92,15 @@ func (db *DB) migrate() error {
 	return nil
 }
 
+func (db *DB) GetDevice() {
+
+}
+
+func (db *DB) InsertMetrics(dev DeviceStatus) error {
+	tx, err := db.conn.BeginTx(nil, nil)
+
+}
+
 func (db *DB) Close() error {
 	return db.conn.Close()
 }

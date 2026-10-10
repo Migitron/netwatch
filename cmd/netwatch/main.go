@@ -28,14 +28,13 @@ func main() {
 	}
 	defer db.Close()
 
-	fmt.Println("Netwatching port:", cfg.Port)
+	//fmt.Println("Netwatching port:", cfg.Port)
 
 	printPingResults(collector.PingAll(cfg))
 	printPollResults(collector.PollAll(cfg))
 }
 
 func printPingResults(results []collector.PingResult) {
-	fmt.Println("Pinging all devices:")
 	for _, r := range results {
 		switch {
 		case r.Skipped:
@@ -51,7 +50,6 @@ func printPingResults(results []collector.PingResult) {
 }
 
 func printPollResults(results []collector.SystemInfo) {
-	fmt.Println("Polling all devices:")
 	for _, r := range results {
 		switch {
 		case r.Skipped:
